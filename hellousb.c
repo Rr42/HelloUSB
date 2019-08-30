@@ -30,7 +30,7 @@ this driver is identified and no other compatible driver is found before hand.
 A return value of '0' indicates that this driver will manage the identified device.*/
 static int hellousb_probe(struct usb_interface *interface, const struct usb_device_id *id)
 {
-    printk(KERN_INFO "--> Hellousb USB drive (%04X:%04X) identified\n", id->idVendor, id->idProduct);
+    printk(KERN_INFO "hellousb: Hellousb USB drive (%04X:%04X) identified\n", id->idVendor, id->idProduct);
     return 0;
 }
 
@@ -38,7 +38,7 @@ static int hellousb_probe(struct usb_interface *interface, const struct usb_devi
 /* The disconnect function is called when the identified device id disconnected.*/
 static void hellousb_disconnect(struct usb_interface *interface)
 {
-    printk(KERN_INFO "--> Hellousb USB drive disconnected\n");
+    printk(KERN_INFO "hellousb: Hellousb USB drive disconnected\n");
 }
 
 /* USB driver */
@@ -57,23 +57,23 @@ static struct usb_driver hellousb_driver =
 static int __init hellousb_init(void)
 {
     int rt = -1;
-    printk(KERN_INFO "--> Hellousb kernel module loaded\n");
-    printk(KERN_INFO "  > Registering Hellousb driver\n");
+    printk(KERN_INFO "hellousb: Hellousb kernel module loaded\n");
+    printk(KERN_INFO "hellousb: Registering Hellousb driver\n");
     rt = usb_register(&hellousb_driver);
-    printk(KERN_INFO "  > Registeration return code: %i\n", rt);
+    printk(KERN_INFO "hellousb: Registeration return code: %i\n", rt);
 
     if (rt == -16)
     {
-        printk(KERN_INFO "  > Driver already registered!\n");
-        printk(KERN_INFO "  > Attempting to deregister existing driver...\n");
+        printk(KERN_INFO "hellousb: Driver already registered!\n");
+        printk(KERN_INFO "hellousb: Attempting to deregister existing driver...\n");
         usb_deregister(&hellousb_driver);
-        printk(KERN_INFO "  > Driver successfully deregisted\n");
+        printk(KERN_INFO "hellousb: Driver successfully deregisted\n");
 
-        printk(KERN_INFO "  > Registering Hellousb driver\n");
+        printk(KERN_INFO "hellousb: Registering Hellousb driver\n");
         rt = usb_register(&hellousb_driver);
     }
 
-    printk(KERN_INFO "  > Hellousb driver registered successfully\n");
+    printk(KERN_INFO "hellousb: Hellousb driver registered successfully\n");
 
     return rt;
 }
@@ -82,10 +82,10 @@ static int __init hellousb_init(void)
 /* The exit function is called when the kernel module is unloaded.*/
 static void __exit hellousb_exit(void)
 {
-    printk(KERN_INFO "--> Deregistering driver...\n");
+    printk(KERN_INFO "hellousb: Deregistering driver...\n");
     usb_deregister(&hellousb_driver);
-    printk(KERN_INFO "  > Driver successfully deregistered\n");
-    printk(KERN_INFO "--> Hellousb kernel module successfully unloaded\n");
+    printk(KERN_INFO "hellousb: Driver successfully deregistered\n");
+    printk(KERN_INFO "hellousb: Hellousb kernel module successfully unloaded\n");
 }
 
 module_init(hellousb_init);
